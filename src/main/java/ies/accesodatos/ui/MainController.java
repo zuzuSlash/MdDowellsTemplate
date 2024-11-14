@@ -4,13 +4,17 @@ package ies.accesodatos.ui;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
+import ies.accesodatos.DataBaseConnection;
 import ies.accesodatos.categorias.services.CategoriaCommandService;
 import ies.accesodatos.categorias.services.CategoriaQueryService;
 import ies.accesodatos.commons.services.Event;
 
+import ies.accesodatos.empleados.DAO.EmpleadoDAO;
+import ies.accesodatos.empleados.repository.EmpleadoQueryRepository;
 import ies.accesodatos.empleados.services.EmpleadoCommandService;
 import ies.accesodatos.empleados.services.EmpleadoQueryService;
 
+import ies.accesodatos.empleados.services.EmpleadoRepository;
 import ies.accesodatos.productos.services.ProductoCommandService;
 import ies.accesodatos.productos.services.ProductoQueryService;
 import ies.accesodatos.ui.categorias.view.FormularioCategoriaView;
@@ -49,6 +53,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -62,8 +67,12 @@ public class MainController implements Initializable {
     private Router router;
 
     private EventBus eventBus;
-    //dao's
 
+    private EmpleadoRepository empleadoRepository;
+    private EmpleadoQueryRepository empleadoQueryRepository;
+    private EmpleadoQueryService service;
+    //dao's
+    private EmpleadoDAO empleadoDAO;
     //servicios
     private CategoriaCommandService categoriaCommandService;
     private CategoriaQueryService categoriaQueryService;
@@ -72,7 +81,7 @@ public class MainController implements Initializable {
     private EmpleadoCommandService empleadoCommandService;
     private EmpleadoQueryService empleadoQueryService;
 
-
+    private DataBaseConnection connection;
     //view models
     private CategoriaViewModel categoriaViewModel;
     private EmpleadoViewModel empleadoViewModel;
@@ -97,8 +106,12 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         System.out.println("Iniciando");
-        this.initCommons();
-
+        try {
+            this.initCommons();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        this.initRepository();
         this.initServices();
         this.initViewModels();
         this.initCategorias();
@@ -120,28 +133,43 @@ public class MainController implements Initializable {
 
 
     }
+    private void initDao (){
+        empleadoDAO = new EmpleadoDAO();
+        empleadoDAO.setConnection(this.connection);
+    }
 
+    private void initRepository(){
+        initDao();
+        this.empleadoQueryRepository = new EmpleadoQueryRepository(empleadoDAO);
+        this.empleadoRepository = new EmpleadoRepository(empleadoDAO);
+    }
 
-    private void initCommons(){
+    private void initCommons() throws Exception {
         this.eventBus = new EventBus();
         this.router = new Router();
         this.router.setMain(contentPane);
+        this.connection = new DataBaseConnection();
+        connection.setConfig_path("/src/main/resources/config.properties");
+        connection.open();
     }
 
 
 
     private void initServices(){
-        //se registran también los eventos
-        this.categoriaCommandService =new CategoriaCommandService();
+        //this.empleadoRepository = new EmpleadoRepository();
+      //  this.empleadoQueryRepository = new EmpleadoQueryRepository();
 
+        this.categoriaCommandService = new CategoriaCommandService();
         this.categoriaCommandService.register(this);
-        this.categoriaQueryService= new CategoriaQueryService();
-        this.productoCommandService =new ProductoCommandService();
+        this.categoriaQueryService = new CategoriaQueryService();
+        this.productoCommandService = new ProductoCommandService();
         this.productoCommandService.register(this);
-        this.productoQueryService= new ProductoQueryService();
-        this.empleadoCommandService =new EmpleadoCommandService();
+        this.productoQueryService = new ProductoQueryService();
+
+        this.empleadoCommandService = new EmpleadoCommandService(empleadoRepository);
         this.empleadoCommandService.register(this);
-        this.empleadoQueryService= new EmpleadoQueryService();
+
+        this.empleadoQueryService = new EmpleadoQueryService(empleadoQueryRepository);
 
 
     }

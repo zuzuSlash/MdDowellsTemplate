@@ -1,13 +1,10 @@
 ----------------------------------------------------------------
-Thu Nov 14 11:30:56 UTC 2024:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046): instance a816c00e-0193-2a70-ceed-000006b00000 
-on database directory C:\Users\Zzz\Desktop\MdDowellsTemplate-master\db\mcdowellsJJG with class loader com.intellij.database.remote.jdbc.impl.JdbcClassLoader$JdbcClassLoaderImpl@7e9a5fbe 
-Loaded from file:/C:/Users/Zzz/AppData/Roaming/JetBrains/IntelliJIdea2024.2/jdbc-drivers/Apache%20Derby/10.16.1.1/org/apache/derby/derby/10.16.1.1/derby-10.16.1.1.jar
-java.vendor=JetBrains s.r.o.
-java.runtime.version=21.0.4+13-b509.26
-user.dir=C:\Users\Zzz\Desktop\MdDowellsTemplate-master
-os.name=Windows 10
+Thu Nov 14 17:16:03 CET 2024D001 : [0] The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046), [1] a816c00e-0193-2b75-d77c-000003214c88, [2] /home/juljimgar/Escriptori/MdDowellsTemplate/db/mcdowellsJJG, [3] jdk.internal.loader.ClassLoaders$AppClassLoader@610455d6, [4] file:/home/juljimgar/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.16.1.1/f9ca2054b3e33ec3f3f19df4a7490352d82de54a/derby-10.16.1.1.jar
+java.vendor=Eclipse Adoptium
+java.runtime.version=21.0.4+7-LTS
+user.dir=/home/juljimgar/Escriptori/MdDowellsTemplate
+os.name=Linux
 os.arch=amd64
-os.version=10.0
+os.version=5.15.0-75-generic
 derby.system.home=null
-Database Class Loader started - derby.database.classpath=''
+C005 : [0] 

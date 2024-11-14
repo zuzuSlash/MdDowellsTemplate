@@ -15,14 +15,13 @@ import java.util.logging.Logger;
 
 public class EmpleadoDAO extends ADao<Empleado,Integer> {
 
-
     private String tableName = "empleados";
     private String selectall = "select * from APP." + this.tableName;
     private String selectbyid = "select * from APP." + this.tableName + " where ID=?";
     private String deletebyid = "delete from APP." + this.tableName + " where ID=?";
     private String insertsql = "insert into APP." + this.tableName + "(NOMBRE,ACTIVO," + "CLAVE,CORREO)VALUES(?,?,?,?)";
     private String updatesql = "update APP." + this.tableName + "set NOMBRE=?,ACTIVO=?," + "CLAVE=?,CORREO=? WHERE ID=?";
-    public EmpleadoDAO(DataBaseConnection conn) {
+    public EmpleadoDAO() {
         super();
     }
     @Override
