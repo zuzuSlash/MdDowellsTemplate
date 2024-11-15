@@ -24,7 +24,6 @@ public class Categoria implements Cloneable, Comparable<Categoria> {
         this.img_src ="";
         this.activo = false;
 
-
     }
 
 

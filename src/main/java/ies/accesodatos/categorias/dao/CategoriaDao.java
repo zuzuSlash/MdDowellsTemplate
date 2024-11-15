@@ -1,8 +1,7 @@
-package ies.accesodatos.empleados.DAO;
+package ies.accesodatos.categorias.dao;
 
-import ies.accesodatos.DataBaseConnection;
+import ies.accesodatos.categorias.model.Categoria;
 import ies.accesodatos.commons.dao.ADao;
-import ies.accesodatos.empleados.model.Empleado;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,33 +12,33 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class EmpleadoDAO extends ADao<Empleado,Integer> {
+public class CategoriaDao extends ADao<Categoria,Integer> {
 
-    private String tableName = "empleados";
+    private String tableName = "categorias";
     private String selectall = "select * from APP." + this.tableName;
     private String selectbyid = "select * from APP." + this.tableName + " where ID=?";
     private String deletebyid = "delete from APP." + this.tableName + " where ID=?";
-    private String insertsql = "insert into APP." + this.tableName + "(NOMBRE,ACTIVO," + "CLAVE,CORREO)VALUES(?,?,?,?)";
-    private String updatesql = "update APP." + this.tableName + "set NOMBRE=?,ACTIVO=?," + "CLAVE=?,CORREO=? WHERE ID=?";
-    public EmpleadoDAO() {
+    private String insertsql = "insert into APP." + this.tableName + "(NOMBRE,ACTIVO," + "IMG_SRC,CORREO)VALUES(?,?,?,?)";
+    private String updatesql = "update APP." + this.tableName + "set NOMBRE=?,ACTIVO=?," + "IMG_SRC=?,CORREO=? WHERE ID=?";
+    public CategoriaDao() {
         super();
     }
     @Override
-    public Empleado getById(Integer id) {
-        Empleado empleado = new Empleado();
+    public Categoria getById(Integer id) {
+        Categoria categoria = new Categoria();
         try {
             PreparedStatement pst = this.getConnection().getConnection().prepareStatement(this.selectbyid);
             pst.setInt(1, id);
             ResultSet rs = pst.executeQuery();
             if(rs.next())
-                empleado = this.registerToObject(rs);
+                categoria = this.registerToObject(rs);
             pst.close();
         } catch (SQLException ex) {
 
-            Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.SEVERE,
+            Logger.getLogger(CategoriaDao.class.getName()).log(Level.SEVERE,
                     null, ex);
         }
-        return empleado;
+        return categoria;
     }
     @Override
     public void deleteById(Integer id) {
@@ -49,13 +48,14 @@ public class EmpleadoDAO extends ADao<Empleado,Integer> {
             pst.executeUpdate();
             pst.close();
         } catch (SQLException ex) {
-            Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.SEVERE, null, ex);
+
+            Logger.getLogger(CategoriaDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     @Override
-    public List<Empleado> getAll() {
-        ArrayList<Empleado> scl = new ArrayList<>();
-        Empleado tempo;
+    public List<Categoria> getAll() {
+        ArrayList<Categoria> scl = new ArrayList<>();
+        Categoria tempo;
         PreparedStatement pst = null;
         try {
             try {
@@ -63,7 +63,7 @@ public class EmpleadoDAO extends ADao<Empleado,Integer> {
             } catch (SQLException ex) {
                 ex.printStackTrace();
 
-                Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.SEVERE,
+                Logger.getLogger(CategoriaDao.class.getName()).log(Level.SEVERE,
                         null, ex);
             }
             ResultSet rs = pst.executeQuery();
@@ -74,30 +74,30 @@ public class EmpleadoDAO extends ADao<Empleado,Integer> {
             pst.close();
         } catch (SQLException ex) {
 
-            Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.SEVERE,
+            Logger.getLogger(CategoriaDao.class.getName()).log(Level.SEVERE,
                     null, ex);
         }
         return scl;
     }
     @Override
-    public void update(Empleado item) {
+    public void update(Categoria item) {
         try {
             PreparedStatement pst = this.getConnection().getConnection().prepareStatement(this.updatesql);
             pst.setString(1, item.getNombre());
-            pst.setBoolean(2, item.isActivo());
-            pst.setString(3, item.getClave());
-            pst.setString(4, item.getCorreo());
+            pst.setString(2, item.getDescripcion());
+            pst.setString(3, item.getImg_src());
+            pst.setBoolean(4, item.isActivo());
             pst.setInt(5, item.getId());
             pst.executeUpdate();
             pst.close();
         } catch (SQLException ex) {
 
-            Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.SEVERE,
+            Logger.getLogger(CategoriaDao.class.getName()).log(Level.SEVERE,
                     null, ex);
         }
     }
     @Override
-    public void delete(Empleado item) {
+    public void delete(Categoria item) {
         try {
             PreparedStatement pst = this.getConnection().getConnection().prepareStatement(this.deletebyid);
             pst.setInt(1, item.getId());
@@ -105,19 +105,19 @@ public class EmpleadoDAO extends ADao<Empleado,Integer> {
             pst.close();
         } catch (SQLException ex) {
 
-            Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.SEVERE,
+            Logger.getLogger(CategoriaDao.class.getName()).log(Level.SEVERE,
                     null, ex);
         }
     }
     @Override
-    public void insert(Empleado item) {
+    public void insert(Categoria item) {
         PreparedStatement pst;
         try {
             pst = this.getConnection().getConnection().prepareStatement(this.insertsql, Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, item.getNombre());
-            pst.setBoolean(2, item.isActivo());
-            pst.setString(3, item.getClave());
-            pst.setString(4, item.getCorreo());
+            pst.setString(2, item.getDescripcion());
+            pst.setString(3, item.getImg_src());
+            pst.setBoolean(4, item.isActivo());
             pst.executeUpdate();
             ResultSet rs = pst.getGeneratedKeys();
             if (rs.next()) {
@@ -125,21 +125,21 @@ public class EmpleadoDAO extends ADao<Empleado,Integer> {
             }
         } catch (SQLException ex) {
 
-            Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CategoriaDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     //pasar de registro a objeeto
-    private Empleado registerToObject(ResultSet r) {
-        Empleado item = new Empleado();
+    private Categoria registerToObject(ResultSet r) {
+        Categoria item = new Categoria();
         try {
             item.setId(r.getInt("ID"));
             item.setNombre(r.getString("NOMBRE"));
-            item.setClave(r.getString("CLAVE"));
-            item.setCorreo(r.getString("CORREO"));
+            item.setDescripcion(r.getString("DESCRIPCION"));
+            item.setImg_src(r.getString("IMG_SRC"));
             item.setActivo(r.getBoolean("ACTIVO"));
         } catch (SQLException ex) {
 
-            Logger.getLogger(Empleado.class.getName()).log(Level.SEVERE,
+            Logger.getLogger(Categoria.class.getName()).log(Level.SEVERE,
                     null, ex);
         }
         return item;
