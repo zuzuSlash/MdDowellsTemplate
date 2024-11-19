@@ -1,4 +1,4 @@
-package ies.accesodatos.empleados.services;
+package ies.accesodatos.empleados.repository;
 
 import ies.accesodatos.commons.repositories.AWriteRepository;
 import ies.accesodatos.empleados.DAO.EmpleadoDAO;

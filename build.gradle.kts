@@ -35,7 +35,8 @@ dependencies {
 // Conexión remota
     implementation("org.apache.derby:derbyclient:10.16.1.1")
     implementation("org.jasypt:jasypt:1.9.3")
-
+    // gson
+    implementation ("com.google.code.gson:gson:2.10.1")
 
     //base de datos
 

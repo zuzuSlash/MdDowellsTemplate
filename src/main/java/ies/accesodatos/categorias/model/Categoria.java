@@ -26,7 +26,6 @@ public class Categoria implements Cloneable, Comparable<Categoria> {
 
     }
 
-
     public int getId() {
         return id;
     }

@@ -15,11 +15,11 @@ import java.util.logging.Logger;
 public class CategoriaDao extends ADao<Categoria,Integer> {
 
     private String tableName = "categorias";
-    private String selectall = "select * from APP." + this.tableName;
+    private final String selectall = "select * from APP." + this.tableName;
     private String selectbyid = "select * from APP." + this.tableName + " where ID=?";
     private String deletebyid = "delete from APP." + this.tableName + " where ID=?";
-    private String insertsql = "insert into APP." + this.tableName + "(NOMBRE,ACTIVO," + "IMG_SRC,CORREO)VALUES(?,?,?,?)";
-    private String updatesql = "update APP." + this.tableName + "set NOMBRE=?,ACTIVO=?," + "IMG_SRC=?,CORREO=? WHERE ID=?";
+    private String insertsql = "insert into APP." + this.tableName + "(NOMBRE,DESCRIPCION,ACTIVO,IMG_SRC)VALUES(?,?,?,?)";
+    private String updatesql = "update APP." + this.tableName + " set NOMBRE=?, DESCRIPCION=?, ACTIVO=?, IMG_SRC=? WHERE ID=?";
     public CategoriaDao() {
         super();
     }
@@ -85,8 +85,8 @@ public class CategoriaDao extends ADao<Categoria,Integer> {
             PreparedStatement pst = this.getConnection().getConnection().prepareStatement(this.updatesql);
             pst.setString(1, item.getNombre());
             pst.setString(2, item.getDescripcion());
-            pst.setString(3, item.getImg_src());
-            pst.setBoolean(4, item.isActivo());
+            pst.setBoolean(3, item.isActivo());
+            pst.setString(4, item.getImg_src());
             pst.setInt(5, item.getId());
             pst.executeUpdate();
             pst.close();
@@ -112,12 +112,13 @@ public class CategoriaDao extends ADao<Categoria,Integer> {
     @Override
     public void insert(Categoria item) {
         PreparedStatement pst;
+        item.setImg_src("C:\\Users\\Zzz\\Desktop\\Trabajos\\MdDowellsTemplate\\src\\main\\resources\\images\\foodAdd.png");
         try {
             pst = this.getConnection().getConnection().prepareStatement(this.insertsql, Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, item.getNombre());
             pst.setString(2, item.getDescripcion());
-            pst.setString(3, item.getImg_src());
-            pst.setBoolean(4, item.isActivo());
+            pst.setBoolean(3, item.isActivo());
+            pst.setString(4, item.getImg_src());
             pst.executeUpdate();
             ResultSet rs = pst.getGeneratedKeys();
             if (rs.next()) {

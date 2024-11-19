@@ -5,6 +5,9 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
 import ies.accesodatos.DataBaseConnection;
+import ies.accesodatos.categorias.dao.CategoriaDao;
+import ies.accesodatos.categorias.repository.CategoriaQueryRepository;
+import ies.accesodatos.categorias.repository.CategoriaRepository;
 import ies.accesodatos.categorias.services.CategoriaCommandService;
 import ies.accesodatos.categorias.services.CategoriaQueryService;
 import ies.accesodatos.commons.services.Event;
@@ -14,7 +17,7 @@ import ies.accesodatos.empleados.repository.EmpleadoQueryRepository;
 import ies.accesodatos.empleados.services.EmpleadoCommandService;
 import ies.accesodatos.empleados.services.EmpleadoQueryService;
 
-import ies.accesodatos.empleados.services.EmpleadoRepository;
+import ies.accesodatos.empleados.repository.EmpleadoRepository;
 import ies.accesodatos.productos.services.ProductoCommandService;
 import ies.accesodatos.productos.services.ProductoQueryService;
 import ies.accesodatos.ui.categorias.view.FormularioCategoriaView;
@@ -53,8 +56,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -71,8 +72,14 @@ public class MainController implements Initializable {
     private EmpleadoRepository empleadoRepository;
     private EmpleadoQueryRepository empleadoQueryRepository;
     private EmpleadoQueryService service;
+
+    private CategoriaRepository categoriaRepository;
+    private CategoriaQueryRepository categoriaQueryRepository;
+    private CategoriaQueryService categoriaService;
+
     //dao's
     private EmpleadoDAO empleadoDAO;
+    private CategoriaDao categoriaDao;
     //servicios
     private CategoriaCommandService categoriaCommandService;
     private CategoriaQueryService categoriaQueryService;
@@ -136,12 +143,16 @@ public class MainController implements Initializable {
     private void initDao (){
         empleadoDAO = new EmpleadoDAO();
         empleadoDAO.setConnection(this.connection);
+        categoriaDao = new CategoriaDao();
+        categoriaDao.setConnection(this.connection);
     }
 
     private void initRepository(){
         initDao();
         this.empleadoQueryRepository = new EmpleadoQueryRepository(empleadoDAO);
         this.empleadoRepository = new EmpleadoRepository(empleadoDAO);
+        this.categoriaQueryRepository = new CategoriaQueryRepository(categoriaDao);
+        this.categoriaRepository = new CategoriaRepository(categoriaDao);
     }
 
     private void initCommons() throws Exception {
@@ -159,9 +170,11 @@ public class MainController implements Initializable {
         //this.empleadoRepository = new EmpleadoRepository();
       //  this.empleadoQueryRepository = new EmpleadoQueryRepository();
 
-        this.categoriaCommandService = new CategoriaCommandService();
+        this.categoriaCommandService = new CategoriaCommandService(categoriaRepository);
         this.categoriaCommandService.register(this);
-        this.categoriaQueryService = new CategoriaQueryService();
+
+        this.categoriaQueryService = new CategoriaQueryService(categoriaQueryRepository);
+
         this.productoCommandService = new ProductoCommandService();
         this.productoCommandService.register(this);
         this.productoQueryService = new ProductoQueryService();

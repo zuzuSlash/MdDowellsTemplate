@@ -1,11 +1,10 @@
 package ies.accesodatos.empleados.services;
 
 
-import ies.accesodatos.DataBaseConnection;
 import ies.accesodatos.commons.services.ACommandService;
 import ies.accesodatos.commons.services.Event;
-import ies.accesodatos.empleados.DAO.EmpleadoDAO;
 import ies.accesodatos.empleados.model.Empleado;
+import ies.accesodatos.empleados.repository.EmpleadoRepository;
 
 
 public class EmpleadoCommandService extends ACommandService {
